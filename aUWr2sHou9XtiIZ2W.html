@@ -1,0 +1,203 @@
+<html><head><base href="https://websim-archive.github.io" /><title>WebSim Archive - Preserving Digital Creativity</title><style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f4f8;
+  }
+  h1, h2, h3 {
+    color: #2c3e50;
+  }
+  .container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  form {
+    margin-bottom: 30px;
+    background-color: #e8f0fe;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  input[type="text"], input[type="url"], input[type="email"], textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  input[type="submit"] {
+    background-color: #3498db;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+  }
+  input[type="submit"]:hover {
+    background-color: #2980b9;
+  }
+  .archive-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  .archive-item {
+    background-color: #ecf0f1;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+  }
+  .archive-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  }
+  .archive-item h3 {
+    margin-top: 0;
+    color: #2c3e50;
+  }
+  .archive-item p {
+    margin-bottom: 8px;
+  }
+  .archive-item a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .archive-item a:hover {
+    text-decoration: underline;
+  }
+  .tag {
+    display: inline-block;
+    background-color: #3498db;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 5px;
+  }
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #7f8c8d;
+  }
+</style></head><body>
+  <div class="container">
+    <h1>WebSim Archive: Preserving Digital Creativity</h1>
+    <p>Welcome to the WebSim Archive, a community-driven initiative to preserve and celebrate the innovative creations from the WebSim platform. Our mission is to ensure that these digital artifacts remain accessible for future generations, serving as a testament to human creativity in the digital age.</p>
+    
+    <h2>Why Archive WebSim Pages?</h2>
+    <ul>
+      <li>Preservation of digital culture and innovation</li>
+      <li>Educational resource for future developers and designers</li>
+      <li>Historical record of web technology evolution</li>
+      <li>Inspiration for future creative projects</li>
+    </ul>
+
+    <h2>Submit a WebSim Page for Archiving</h2>
+    <form action="https://formspree.io/f/xyzgzdnw" method="POST" enctype="multipart/form-data">
+      <input type="url" name="websim_url" placeholder="WebSim Page URL (e.g., https://websim.ai/c/your-page-id)" required>
+      <input type="text" name="creator" placeholder="Creator's Name or Username" required>
+      <textarea name="description" placeholder="Brief description of the page (max 500 characters)" maxlength="500" required></textarea>
+      <select name="category" required>
+        <option value="">Select a Category</option>
+        <option value="art">Art & Design</option>
+        <option value="science">Science & Education</option>
+        <option value="technology">Technology & Innovation</option>
+        <option value="game">Games & Interactive</option>
+        <option value="social">Social & Community</option>
+        <option value="other">Other</option>
+      </select>
+      <input type="text" name="tags" placeholder="Tags (comma-separated, e.g., 3D, animation, physics)">
+      <input type="email" name="email" placeholder="Your email address" required>
+      <input type="submit" value="Submit for Archiving">
+    </form>
+
+    <h2>Recently Archived Pages</h2>
+    <ul class="archive-list">
+      <li class="archive-item">
+        <h3>Quantum Computing Simulator</h3>
+        <p><strong>Creator:</strong> QuantumPioneer</p>
+        <p><strong>Description:</strong> An interactive simulation of quantum gates and circuits, allowing users to experiment with basic quantum computing concepts. Features include drag-and-drop circuit building, real-time state vector visualization, and a comprehensive tutorial system.</p>
+        <p><strong>Category:</strong> Science & Education</p>
+        <p><strong>Tags:</strong> <span class="tag">quantum</span> <span class="tag">simulation</span> <span class="tag">education</span></p>
+        <p><strong>Original URL:</strong> <a href="https://websim.ai/c/quantum-sim-3x92j">https://websim.ai/c/quantum-sim-3x92j</a></p>
+        <p><strong>Archived URL:</strong> <a href="/archive/quantum-sim-3x92j">View Archived Version</a></p>
+        <div class="stats">
+          <span>Archived: June 15, 2023</span>
+          <span>Views: 1,243</span>
+          <span>Likes: 89</span>
+        </div>
+      </li>
+      <li class="archive-item">
+        <h3>Ancient Mesopotamian Virtual Museum</h3>
+        <p><strong>Creator:</strong> HistoryBuff2023</p>
+        <p><strong>Description:</strong> Step into the cradle of civilization with this immersive virtual tour of ancient Mesopotamian artifacts and architecture. Featuring 3D models of the Hanging Gardens of Babylon, the Ziggurat of Ur, and interactive exhibits on cuneiform writing and early agriculture.</p>
+        <p><strong>Category:</strong> Art & Design</p>
+        <p><strong>Tags:</strong> <span class="tag">history</span> <span class="tag">3D</span> <span class="tag">virtual-tour</span></p>
+        <p><strong>Original URL:</strong> <a href="https://websim.ai/c/meso-museum-7y4lp">https://websim.ai/c/meso-museum-7y4lp</a></p>
+        <p><strong>Archived URL:</strong> <a href="/archive/meso-museum-7y4lp">View Archived Version</a></p>
+        <div class="stats">
+          <span>Archived: June 10, 2023</span>
+          <span>Views: 2,789</span>
+          <span>Likes: 156</span>
+        </div>
+      </li>
+      <li class="archive-item">
+        <h3>Eco-City Planner</h3>
+        <p><strong>Creator:</strong> GreenUrbanist</p>
+        <p><strong>Description:</strong> Design the sustainable city of the future with this comprehensive urban planning simulator. Features include real-time environmental impact calculations, renewable energy integration, green space optimization, and traffic flow analysis. Collaborate with other users to create the ultimate eco-friendly metropolis.</p>
+        <p><strong>Category:</strong> Technology & Innovation</p>
+        <p><strong>Tags:</strong> <span class="tag">urban-planning</span> <span class="tag">sustainability</span> <span class="tag">simulation</span></p>
+        <p><strong>Original URL:</strong> <a href="https://websim.ai/c/eco-city-9z8xw">https://websim.ai/c/eco-city-9z8xw</a></p>
+        <p><strong>Archived URL:</strong> <a href="/archive/eco-city-9z8xw">View Archived Version</a></p>
+        <div class="stats">
+          <span>Archived: June 5, 2023</span>
+          <span>Views: 3,567</span>
+          <span>Likes: 278</span>
+        </div>
+      </li>
+    </ul>
+
+    <h2>About the Archiving Process</h2>
+    <p>Our dedicated team of archivists carefully reviews each submission to ensure it meets our archiving criteria. Once approved, we use advanced web crawling technology to capture not just the visual elements, but also the interactive features that make WebSim creations unique. Our archive aims to preserve the functionality of these pages as much as possible, allowing future visitors to experience them as they were originally intended.</p>
+
+    <h2>Contribute to the Archive</h2>
+    <p>The WebSim Archive is a community effort, and we welcome contributions beyond just submitting pages:</p>
+    <ul>
+      <li>Volunteer as a content reviewer or archivist</li>
+      <li>Contribute to our open-source archiving tools on <a href="https://github.com/websim-archive">GitHub</a></li>
+      <li>Help categorize and tag archived content</li>
+      <li>Spread the word about the importance of digital preservation</li>
+    </ul>
+
+    <h2>Contact Us</h2>
+    <p>For any questions, suggestions, or if you'd like to get involved, please reach out to us at <a href="/cdn-cgi/l/email-protection#d0b1a2b3b8b9a6b590a7b5b2a3b9bdfeb1b9"><span class="__cf_email__" data-cfemail="d9b8abbab1b0afbc99aebcbbaab0b4f7b8b0">[email&#160;protected]</span></a>.</p>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+      // Form is now handled by Formspree, so we don't need to prevent default
+      // or show an alert. Formspree will handle the submission.
+    });
+
+    // Add some interactivity to the archive items
+    document.querySelectorAll('.archive-item').forEach(item => {
+      item.addEventListener('click', function() {
+        this.style.backgroundColor = '#d5e5f2';
+        setTimeout(() => {
+          this.style.backgroundColor = '#ecf0f1';
+        }, 300);
+      });
+    });
+  </script>
+</body></html>
