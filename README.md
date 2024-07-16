@@ -1,5 +1,3 @@
-Sure, here's a sample `README.md` file for the WebSim Archive project:
-
 ```markdown
 # WebSim Archive
 
@@ -83,13 +81,13 @@ Our dedicated team of archivists carefully reviews each submission to ensure it 
 The WebSim Archive is a community effort, and we welcome contributions beyond just submitting pages:
 
 - Volunteer as a content reviewer or archivist
-- Contribute to our open-source archiving tools on [GitHub](https://github.com/websim-archive)
-- Help categorize and tag archived content
+- Contribute to our open-source archiving tools on [GitHub](https://github.com/Monisource/Simweb-archive/tree/Monisource-public)
+- Help categorize and tag archived content 
 - Spread the word about the importance of digital preservation
 
 ## Contact Us
 
-For any questions, suggestions, or if you'd like to get involved, please reach out to us at [email protected].
+For any questions, suggestions, or if you'd like to get involved, please reach out to us at [-email here-].
 
 ## License
 
