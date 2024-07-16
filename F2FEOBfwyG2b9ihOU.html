@@ -1,0 +1,429 @@
+<html><head><base href="https://lootboxsim.com/"><title>EmojiLoot - Lootbox Simulator</title><style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-image: linear-gradient(45deg, #3498db, #2980b9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  #game-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    min-height: auto;
+  }
+  #loot-key, #main-content, #collection {
+    background-color: #ecf0f1;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    height: auto;
+    overflow-y: auto;
+    width: 100%;
+  }
+  #loot-key {
+    order: 2;
+  }
+  #main-content {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  #collection {
+    order: 3;
+  }
+  h1, h2 {
+    color: #2c3e50;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    font-size: 1.5em;
+  }
+  #balance {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #3498db;
+  }
+  #lootboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .lootbox {
+    background-color: #3498db;
+    border: 3px solid #2980b9;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    color: white;
+    font-size: 0.9em;
+  }
+  .lootbox:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.2);
+  }
+  #inventory {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    border-top: 2px dashed #3498db;
+    padding-top: 20px;
+  }
+  #inventory-items {
+    overflow-y: auto;
+    max-height: 200px;
+  }
+  .inventory-item, .loot-item, .collection-item {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 0.9em;
+  }
+  .sell-button, #sell-all, #loot-popup-close, #sell-popup-close {
+    background-color: #2ecc71;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9em;
+    margin: 2px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  .sell-button:hover, #sell-all:hover, #loot-popup-close:hover, #sell-popup-close:hover {
+    background-color: #27ae60;
+  }
+  #sell-all {
+    font-size: 1em;
+    padding: 12px 24px;
+    margin-bottom: 15px;
+    background-color: #3498db;
+    align-self: center;
+  }
+  #sell-all:hover {
+    background-color: #2980b9;
+  }
+  #loot-popup, #sell-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    z-index: 1000;
+    text-align: center;
+    display: none;
+    width: 80%;
+    max-width: 300px;
+  }
+  #lootbox-select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 2px solid #3498db;
+    font-size: 1em;
+    background-color: #ecf0f1;
+  }
+  .odds {
+    font-size: 0.8em;
+    color: #7f8c8d;
+  }
+  .collection-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+  }
+  .indicator-found {
+    background-color: #2ecc71;
+    box-shadow: 0 0 5px #2ecc71;
+  }
+  .indicator-not-found {
+    background-color: #e74c3c;
+    box-shadow: 0 0 5px #e74c3c;
+  }
+  #loot-message {
+    background-color: #f39c12;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+    display: none;
+    font-size: 0.9em;
+  }
+  @media (min-width: 768px) {
+    #game-container {
+      flex-direction: row;
+      max-width: 1200px;
+    }
+    #loot-key {
+      width: 250px;
+      order: 1;
+    }
+    #main-content {
+      width: 550px;
+      order: 2;
+    }
+    #collection {
+      flex-grow: 1;
+      order: 3;
+    }
+    h1, h2 {
+      font-size: 2em;
+    }
+    #balance {
+      font-size: 2em;
+    }
+    .lootbox, .inventory-item, .loot-item, .collection-item, .sell-button, #sell-all, #loot-popup-close, #sell-popup-close {
+      font-size: 1em;
+    }
+  }
+</style></head><body>
+  <div id="game-container">
+    <div id="loot-key">
+      <h2>🔑 Loot Key 🔑</h2>
+      <select id="lootbox-select">
+        <option value="">Select a lootbox</option>
+      </select>
+      <div id="loot-key-content"></div>
+    </div>
+    <div id="main-content">
+      <h1>🎁 EmojiLoot Bonanza 🎁</h1>
+      <div id="balance">Balance: £100</div>
+      <div id="loot-message"></div>
+      <div id="lootboxes"></div>
+      <div id="inventory">
+        <h2>🎒 Your Treasure Trove 🎒</h2>
+        <button id="sell-all">Sell All Loot</button>
+        <div id="inventory-items"></div>
+      </div>
+    </div>
+    <div id="collection">
+      <h2>🏆 Collection 🏆</h2>
+      <div id="collection-items"></div>
+    </div>
+  </div>
+
+  <div id="loot-popup">
+    <h2>🎉 Treasure Discovered! 🎉</h2>
+    <div id="loot-popup-content"></div>
+    <button id="loot-popup-close">Awesome!</button>
+  </div>
+
+  <div id="sell-popup">
+    <h2>💰 Cha-Ching! 💰</h2>
+    <div id="sell-popup-content"></div>
+    <button id="sell-popup-close">Cool!</button>
+  </div>
+
+  <script>
+    const player = { balance: 100, inventory: [], collection: new Set() };
+    const lootboxes = [
+      { name: "Penny Pouch 👛", price: 5, emoji: "👛" },
+      { name: "Bronze Box 🥉", price: 10, emoji: "🥉" },
+      { name: "Silver Chest 🥈", price: 25, emoji: "🥈" },
+      { name: "Golden Treasure 🥇", price: 50, emoji: "🥇" },
+      { name: "Diamond Cache 💎", price: 75, emoji: "💎" },
+      { name: "Rainbow Surprise 🌈", price: 100, emoji: "🌈" },
+      { name: "Lucky Clover 🍀", price: 150, emoji: "🍀" },
+      { name: "Mystic Crystal 🔮", price: 200, emoji: "🔮" },
+      { name: "Dragon's Hoard 🐉", price: 300, emoji: "🐉" },
+      { name: "Cosmic Vault 🚀", price: 500, emoji: "🚀" }
+    ];
+    const lootItems = [
+      { name: "Rusty Coin", value: 1, emoji: "💰" },
+      { name: "Wooden Figurine", value: 5, emoji: "🗿" },
+      { name: "Silver Spoon", value: 10, emoji: "🥄" },
+      { name: "Golden Goblet", value: 25, emoji: "🏆" },
+      { name: "Ruby Ring", value: 50, emoji: "💍" },
+      { name: "Emerald Necklace", value: 75, emoji: "📿" },
+      { name: "Diamond Tiara", value: 100, emoji: "👑" },
+      { name: "Ancient Scroll", value: 150, emoji: "📜" },
+      { name: "Magic Wand", value: 200, emoji: "✨" },
+      { name: "Dragon Egg", value: 300, emoji: "🥚" },
+      { name: "Alien Artifact", value: 500, emoji: "👽" },
+      { name: "Lucky Horseshoe", value: 15, emoji: "🧲" },
+      { name: "Crystal Ball", value: 80, emoji: "🔮" },
+      { name: "Enchanted Book", value: 120, emoji: "📕" },
+      { name: "Magical Lamp", value: 180, emoji: "🪔" },
+      { name: "Celestial Map", value: 250, emoji: "🗺️" },
+      { name: "Philosopher's Stone", value: 400, emoji: "🧪" },
+      { name: "Time Machine", value: 600, emoji: "⏰" },
+      { name: "Mermaid's Pearl", value: 90, emoji: "🧜‍♀️" },
+      { name: "Unicorn Horn", value: 350, emoji: "🦄" }
+    ];
+
+    const $ = document.querySelector.bind(document);
+    const updateBalance = () => $('#balance').textContent = `Balance: £${player.balance}`;
+    const createLootboxes = () => {
+      $('#lootboxes').innerHTML = lootboxes.map(box => 
+        `<div class="lootbox" onclick="buyLootbox(${box.price})">
+           ${box.emoji}<br>${box.name}<br>£${box.price}
+         </div>`
+      ).join('');
+    };
+
+    const buyLootbox = (price) => {
+      if (player.balance >= price) {
+        player.balance -= price;
+        updateBalance();
+        const loot = generateLoot(price, 3);
+        player.inventory.push(...loot);
+        loot.forEach(item => player.collection.add(item.name));
+        updateInventory();
+        updateCollection();
+        showLootPopup(loot);
+        showLootMessage(loot);
+      } else {
+        showSellPopup("Not enough money to buy this lootbox!");
+      }
+    };
+
+    const calculateLootProbabilities = (boxPrice) => {
+      const possibleLoot = lootItems.filter(item => item.value <= boxPrice * 2);
+      let weights = possibleLoot.map(item => Math.pow(boxPrice / item.value, 1.1));
+      
+      const rustyCoinIndex = possibleLoot.findIndex(item => item.name === "Rusty Coin");
+      if (rustyCoinIndex !== -1) {
+        const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+        const maxRustyCoinWeight = 0.4 * totalWeight;
+        if (weights[rustyCoinIndex] > maxRustyCoinWeight) {
+          const excess = weights[rustyCoinIndex] - maxRustyCoinWeight;
+          weights[rustyCoinIndex] = maxRustyCoinWeight;
+          const otherItemsCount = weights.length - 1;
+          const distributionPerItem = excess / otherItemsCount;
+          weights = weights.map((w, i) => i !== rustyCoinIndex ? w + distributionPerItem : w);
+        }
+      }
+
+      const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+      return possibleLoot.map((item, i) => ({ item, probability: weights[i] / totalWeight }));
+    };
+
+    const generateLoot = (boxPrice, count) => {
+      const lootProbabilities = calculateLootProbabilities(boxPrice);
+      return Array(count).fill().map(() => {
+        const random = Math.random();
+        let cumulativeProbability = 0;
+        for (const { item, probability } of lootProbabilities) {
+          cumulativeProbability += probability;
+          if (random < cumulativeProbability) return item;
+        }
+        return lootProbabilities[lootProbabilities.length - 1].item;
+      });
+    };
+
+    const updateInventory = () => {
+      $('#inventory-items').innerHTML = player.inventory.map((item, index) => 
+        `<div class="inventory-item">
+           ${item.emoji} ${item.name} (£${item.value})
+           <button class="sell-button" onclick="sellItem(${index})">Sell</button>
+         </div>`
+      ).join('');
+    };
+
+    const sellItem = (index) => {
+      const item = player.inventory[index];
+      player.balance += item.value;
+      player.inventory.splice(index, 1);
+      updateBalance();
+      updateInventory();
+      showSellPopup(`You sold ${item.name} for £${item.value}!`);
+    };
+
+    const sellAllLoot = () => {
+      const totalValue = player.inventory.reduce((sum, item) => sum + item.value, 0);
+      player.balance += totalValue;
+      player.inventory = [];
+      updateBalance();
+      updateInventory();
+      showSellPopup(`You sold all your loot for £${totalValue}!`);
+    };
+
+    const createLootboxSelect = () => {
+      $('#lootbox-select').innerHTML += lootboxes.map((box, index) => 
+        `<option value="${index}">${box.name}</option>`
+      ).join('');
+      $('#lootbox-select').addEventListener('change', updateLootKey);
+    };
+
+    const updateLootKey = () => {
+      const selectedIndex = $('#lootbox-select').value;
+      $('#loot-key-content').innerHTML = selectedIndex ? 
+        calculateLootProbabilities(lootboxes[selectedIndex].price)
+          .map(({ item, probability }) => 
+            `<div class="loot-item">
+               <span>${item.emoji} ${item.name} (£${item.value})</span>
+               <span class="odds">${(probability * 100).toFixed(2)}%</span>
+             </div>`
+          ).join('') : '';
+    };
+
+    const showLootPopup = (loot) => {
+      $('#loot-popup-content').innerHTML = loot.map(item => 
+        `${item.emoji} ${item.name} worth £${item.value}`
+      ).join('<br>');
+      $('#loot-popup').style.display = 'block';
+    };
+
+    const showSellPopup = (message) => {
+      $('#sell-popup-content').innerHTML = message;
+      $('#sell-popup').style.display = 'block';
+    };
+
+    const updateCollection = () => {
+      $('#collection-items').innerHTML = lootItems.map(item => 
+        `<div class="collection-item">
+           <span>${item.emoji} ${item.name}</span>
+           <span class="collection-indicator ${player.collection.has(item.name) ? 'indicator-found' : 'indicator-not-found'}"></span>
+         </div>`
+      ).join('');
+    };
+
+    const showLootMessage = (loot) => {
+      const message = loot.map(item => `${item.emoji} ${item.name}`).join(', ');
+      $('#loot-message').textContent = `You found: ${message}`;
+      $('#loot-message').style.display = 'block';
+      setTimeout(() => {
+        $('#loot-message').style.display = 'none';
+      }, 3000);
+    };
+
+    $('#loot-popup-close').addEventListener('click', () => $('#loot-popup').style.display = 'none');
+    $('#sell-popup-close').addEventListener('click', () => $('#sell-popup').style.display = 'none');
+    $('#sell-all').addEventListener('click', sellAllLoot);
+
+    createLootboxes();
+    createLootboxSelect();
+    updateBalance();
+    updateInventory();
+    updateCollection();
+  </script>
+</body></html>
