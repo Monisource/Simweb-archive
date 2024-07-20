@@ -1,0 +1,969 @@
+<html><head><base href="https://webvisualize.ai/gpu_benchmark-brutally%20hard/with%20settings/fps%20display/stats/share-load"><title>WebVisualize AI - Brutally Hard GPU Benchmark</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    font-family: 'Orbitron', sans-serif;
+    background: #000;
+    color: #ff0000;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+  .container {
+    max-width: 1200px;
+    width: 100%;
+    background: rgba(20,0,0,0.8);
+    border: 2px solid #ff0000;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 20px #ff0000;
+  }
+  h1, h2, h3 {
+    color: #ff0000;
+    text-align: center;
+    text-shadow: 0 0 10px #ff0000;
+  }
+  #benchmarkCanvas {
+    width: 100%;
+    height: 600px;
+    border: 1px solid #ff0000;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px #ff0000;
+  }
+  #results, #settings, #stats, #userStats, #instructions, #deviceInfo, #sliderExplanations, #progressiveTestInfo, #shareLoadSection {
+    background: rgba(40,0,0,0.6);
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    border: 1px solid #ff0000;
+  }
+  button, input[type="text"] {
+    background: #300;
+    color: #ff0000;
+    border: 1px solid #ff0000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+    margin: 5px;
+  }
+  button:hover {
+    background: #500;
+    box-shadow: 0 0 10px #ff0000;
+  }
+  input[type="text"] {
+    width: 300px;
+    cursor: text;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #300;
+    border-radius: 10px;
+    margin-top: 20px;
+    overflow: hidden;
+    border: 1px solid #ff0000;
+  }
+  .progress {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #ff0000, #ff6600);
+    transition: width 0.5s ease;
+  }
+  #fps-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(40,0,0,0.8);
+    color: #ff0000;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    border: 1px solid #ff0000;
+    z-index: 1000;
+  }
+  label {
+    display: block;
+    margin-top: 10px;
+  }
+  input[type="range"] {
+    width: calc(100% - 70px);
+    -webkit-appearance: none;
+    background: #300;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  input[type="range"]:hover {
+    opacity: 1;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #ff0000;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #ff0000;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  input[type="number"] {
+    width: 60px;
+    background: #300;
+    border: 1px solid #ff0000;
+    color: #ff0000;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    padding: 5px;
+    margin-left: 10px;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  #particleCount, #particleSize, #particleSpeed, #complexityFactor, #gravitationalPull, #colorIntensity, #particleLifespan, #rainbowSpeed {
+    font-weight: bold;
+    color: #ff6600;
+  }
+  @keyframes flicker {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+  }
+  .flicker {
+    animation: flicker 0.5s infinite;
+  }
+  @keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+  }
+  .shake {
+    animation: shake 0.5s infinite;
+  }
+  .slider-explanation {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #ff9999;
+  }
+  @keyframes rainbow {
+    0% { color: red; }
+    14% { color: orange; }
+    28% { color: yellow; }
+    42% { color: green; }
+    57% { color: blue; }
+    71% { color: indigo; }
+    85% { color: violet; }
+    100% { color: red; }
+  }
+  .rainbow {
+    animation: rainbow 5s linear infinite;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="flicker rainbow">Brutally Hard GPU Benchmark</h1>
+    <div id="fps-container" class="shake">FPS: 0.0</div>
+    <div id="instructions">
+      <h2>Instructions</h2>
+      <p>1. Adjust the sliders or input boxes below to strain your system as much as possible without crashing.</p>
+      <p>2. Click "Detect Device" to let the benchmark automatically adjust for maximum load.</p>
+      <p>3. Use "Progressive Stress Test" for an automated approach to find your system's limits.</p>
+      <p>4. Once satisfied with the settings, click "Initiate System Meltdown" to run the benchmark.</p>
+      <p>5. Your results will be used to establish baselines for similar devices and browsers.</p>
+      <p>6. Use the "Share Settings" button to get a shareable code for your current configuration.</p>
+      <p>7. Use the "Load Settings" button to load a previously shared configuration.</p>
+    </div>
+    <canvas id="benchmarkCanvas"></canvas>
+    <div id="settings">
+      <h2>Extreme Settings</h2>
+      <label for="particleCountSlider">Particle Overload: <span id="particleCount">100000</span></label>
+      <input type="range" id="particleCountSlider" min="0" max="10000000" step="1000" value="100000">
+      <input type="number" id="particleCountInput" min="0" max="10000000" value="100000">
+      <div class="slider-explanation">Controls the number of particles rendered. More particles = more GPU strain.</div>
+
+      <label for="particleSizeSlider">Particle Monstrosity: <span id="particleSize">3</span></label>
+      <input type="range" id="particleSizeSlider" min="0" max="100" step="0.1" value="3">
+      <input type="number" id="particleSizeInput" min="0" max="100" step="0.1" value="3">
+      <div class="slider-explanation">Adjusts the size of each particle. Larger particles cover more screen space.</div>
+
+      <label for="speedSlider">Chaos Velocity: <span id="particleSpeed">5</span></label>
+      <input type="range" id="speedSlider" min="0" max="100" step="0.1" value="5">
+      <input type="number" id="speedInput" min="0" max="100" step="0.1" value="5">
+      <div class="slider-explanation">Sets the speed of particle movement. Faster particles create more visual chaos.</div>
+
+      <label for="complexitySlider">Reality Warping Factor: <span id="complexityFactor">1</span></label>
+      <input type="range" id="complexitySlider" min="0" max="20" step="1" value="1">
+      <input type="number" id="complexityInput" min="0" max="20" value="1">
+      <div class="slider-explanation">Increases the complexity of particle shapes, from simple circles to intricate fractals.</div>
+
+      <label for="gravitationalPullSlider">Gravitational Pull: <span id="gravitationalPull">0</span></label>
+      <input type="range" id="gravitationalPullSlider" min="0" max="1000" step="1" value="0">
+      <input type="number" id="gravitationalPullInput" min="0" max="1000" value="0">
+      <div class="slider-explanation">Adds a central gravitational force, affecting particle movement patterns.</div>
+
+      <label for="colorIntensitySlider">Color Intensity: <span id="colorIntensity">50</span></label>
+      <input type="range" id="colorIntensitySlider" min="0" max="100" step="1" value="50">
+      <input type="number" id="colorIntensityInput" min="0" max="100" value="50">
+      <div class="slider-explanation">Adjusts the vibrancy and glow effect of particle colors.</div>
+
+      <label for="particleLifespanSlider">Particle Lifespan: <span id="particleLifespan">100</span></label>
+      <input type="range" id="particleLifespanSlider" min="0" max="10000" step="1" value="100">
+      <input type="number" id="particleLifespanInput" min="0" max="10000" value="100">
+      <div class="slider-explanation">Sets how long particles exist before respawning. Shorter lifespans create more turbulent visuals.</div>
+
+      <label for="rainbowSpeedSlider">Rainbow Speed: <span id="rainbowSpeed">1</span></label>
+      <input type="range" id="rainbowSpeedSlider" min="0" max="10" step="0.1" value="1">
+      <input type="number" id="rainbowSpeedInput" min="0" max="10" step="0.1" value="1">
+      <div class="slider-explanation">Controls the speed of the rainbow color cycle. Higher values create a psychedelic effect.</div>
+    </div>
+    <button id="detectDevice">Detect Device</button>
+    <button id="startBenchmark">Initiate System Meltdown</button>
+    <button id="progressiveTest">Progressive Stress Test</button>
+    <div class="progress-bar">
+      <div class="progress" id="progressBar"></div>
+    </div>
+    <div id="deviceInfo"></div>
+    <div id="results"></div>
+    <div id="progressiveTestInfo"></div>
+    <div id="stats">
+      <h2>Survival Metrics</h2>
+      <p>Average FPS: <span id="avgFps">0</span></p>
+      <p>Minimum FPS: <span id="minFps">0</span></p>
+      <p>Maximum FPS: <span id="maxFps">0</span></p>
+      <p>1% Low FPS: <span id="lowFps">0</span></p>
+      <p>Frame Time: <span id="frameTime">0</span> ms</p>
+    </div>
+    <div id="userStats">
+      <h2>Global Leaderboard</h2>
+      <p>Your Best Score: <span id="userBestScore">0</span></p>
+      <p>Global Average: <span id="globalAverage">0</span></p>
+      <p>Total Benchmarks Run: <span id="totalBenchmarks">0</span></p>
+    </div>
+    <div id="shareLoadSection">
+      <h2>Share and Load Settings</h2>
+      <button id="shareSettings">Share Settings</button>
+      <input type="text" id="settingsCode" placeholder="Paste settings code here">
+      <button id="loadSettings">Load Settings</button>
+    </div>
+    <div id="sliderExplanations">
+      <h3>Slider Explanations</h3>
+      <p><strong>Particle Overload:</strong> Determines the number of particles rendered simultaneously. Higher values significantly increase GPU load.</p>
+      <p><strong>Particle Monstrosity:</strong> Controls the size of individual particles. Larger particles cover more screen area, potentially affecting performance.</p>
+      <p><strong>Chaos Velocity:</strong> Sets the speed at which particles move. Faster particles create more dynamic scenes, challenging both CPU and GPU.</p>
+      <p><strong>Reality Warping Factor:</strong> Increases the complexity of particle shapes and behaviors. Higher values result in more intricate renderings, pushing graphical limits.</p>
+      <p><strong>Gravitational Pull:</strong> Introduces a central force affecting particle movement. This adds computational complexity to particle physics simulations.</p>
+      <p><strong>Color Intensity:</strong> Adjusts the vibrancy and glow of particles. Higher values may require more advanced color processing and blending operations.</p>
+      <p><strong>Particle Lifespan:</strong> Determines how long particles exist before respawning. Shorter lifespans create more turbulent scenes, potentially stressing particle management systems.</p>
+      <p><strong>Rainbow Speed:</strong> Controls the rate of color change in the rainbow effect. Higher speeds increase the frequency of color calculations.</p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+  <script>
+    const canvas = document.getElementById('benchmarkCanvas');
+    const ctx = canvas.getContext('2d');
+    const startButton = document.getElementById('startBenchmark');
+    const detectButton = document.getElementById('detectDevice');
+    const progressiveTestButton = document.getElementById('progressiveTest');
+    const resultsDiv = document.getElementById('results');
+    const progressBar = document.getElementById('progressBar');
+    const particleCountSlider = document.getElementById('particleCountSlider');
+    const particleSizeSlider = document.getElementById('particleSizeSlider');
+    const speedSlider = document.getElementById('speedSlider');
+    const complexitySlider = document.getElementById('complexitySlider');
+    const gravitationalPullSlider = document.getElementById('gravitationalPullSlider');
+    const colorIntensitySlider = document.getElementById('colorIntensitySlider');
+    const particleLifespanSlider = document.getElementById('particleLifespanSlider');
+    const rainbowSpeedSlider = document.getElementById('rainbowSpeedSlider');
+    const particleCountDisplay = document.getElementById('particleCount');
+    const particleSizeDisplay = document.getElementById('particleSize');
+    const particleSpeedDisplay = document.getElementById('particleSpeed');
+    const complexityFactorDisplay = document.getElementById('complexityFactor');
+    const gravitationalPullDisplay = document.getElementById('gravitationalPull');
+    const colorIntensityDisplay = document.getElementById('colorIntensity');
+    const particleLifespanDisplay = document.getElementById('particleLifespan');
+    const rainbowSpeedDisplay = document.getElementById('rainbowSpeed');
+    const deviceInfoDiv = document.getElementById('deviceInfo');
+    const progressiveTestInfoDiv = document.getElementById('progressiveTestInfo');
+    const shareSettingsButton = document.getElementById('shareSettings');
+    const loadSettingsButton = document.getElementById('loadSettings');
+    const settingsCodeInput = document.getElementById('settingsCode');
+
+    // New input elements
+    const particleCountInput = document.getElementById('particleCountInput');
+    const particleSizeInput = document.getElementById('particleSizeInput');
+    const speedInput = document.getElementById('speedInput');
+    const complexityInput = document.getElementById('complexityInput');
+    const gravitationalPullInput = document.getElementById('gravitationalPullInput');
+    const colorIntensityInput = document.getElementById('colorIntensityInput');
+    const particleLifespanInput = document.getElementById('particleLifespanInput');
+    const rainbowSpeedInput = document.getElementById('rainbowSpeedInput');
+
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let particles = [];
+    let particleCount = 100000;
+    let particleSize = 3;
+    let particleSpeed = 5;
+    let complexityFactor = 1;
+    let gravitationalPull = 0;
+    let colorIntensity = 50;
+    let particleLifespan = 100;
+    let rainbowSpeed = 1;
+    let benchmarkRunning = false;
+    let fpsHistory = [];
+    let rainbowOffset = 0;
+
+    // User stats
+    let userBestScore = 0;
+    let globalScores = [];
+    let totalBenchmarks = 0;
+
+    // Device and browser baselines
+    let deviceBaselines = JSON.parse(localStorage.getItem('deviceBaselines')) || {};
+
+    function updateSettings() {
+      particleCount = parseInt(particleCountSlider.value);
+      particleSize = parseFloat(particleSizeSlider.value);
+      particleSpeed = parseFloat(speedSlider.value);
+      complexityFactor = parseInt(complexitySlider.value);
+      gravitationalPull = parseInt(gravitationalPullSlider.value);
+      colorIntensity = parseInt(colorIntensitySlider.value);
+      particleLifespan = parseInt(particleLifespanSlider.value);
+      rainbowSpeed = parseFloat(rainbowSpeedSlider.value);
+
+      particleCountDisplay.textContent = particleCount;
+      particleSizeDisplay.textContent = particleSize.toFixed(1);
+      particleSpeedDisplay.textContent = particleSpeed.toFixed(1);
+      complexityFactorDisplay.textContent = complexityFactor;
+      gravitationalPullDisplay.textContent = gravitationalPull;
+      colorIntensityDisplay.textContent = colorIntensity;
+      particleLifespanDisplay.textContent = particleLifespan;
+      rainbowSpeedDisplay.textContent = rainbowSpeed.toFixed(1);
+
+      particleCountInput.value = particleCount;
+      particleSizeInput.value = particleSize.toFixed(1);
+      speedInput.value = particleSpeed.toFixed(1);
+      complexityInput.value = complexityFactor;
+      gravitationalPullInput.value = gravitationalPull;
+      colorIntensityInput.value = colorIntensity;
+      particleLifespanInput.value = particleLifespan;
+      rainbowSpeedInput.value = rainbowSpeed.toFixed(1);
+
+      createParticles();
+    }
+
+    function updateFromInput(input, slider, min, max, step) {
+      let value = parseFloat(input.value);
+      if (isNaN(value)) {
+        value = parseFloat(slider.value);
+      }
+      value = Math.max(min, Math.min(max, value));
+      value = Math.round(value / step) * step; // Ensure value aligns with step
+      input.value = value;
+      slider.value = value;
+      updateSettings();
+    }
+
+    [particleCountSlider, particleSizeSlider, speedSlider, complexitySlider, 
+     gravitationalPullSlider, colorIntensitySlider, particleLifespanSlider, rainbowSpeedSlider].forEach(slider => {
+      slider.addEventListener('input', updateSettings);
+    });
+
+    particleCountInput.addEventListener('input', () => updateFromInput(particleCountInput, particleCountSlider, 0, 10000000, 1000));
+    particleSizeInput.addEventListener('input', () => updateFromInput(particleSizeInput, particleSizeSlider, 0, 100, 0.1));
+    speedInput.addEventListener('input', () => updateFromInput(speedInput, speedSlider, 0, 100, 0.1));
+    complexityInput.addEventListener('input', () => updateFromInput(complexityInput, complexitySlider, 0, 20, 1));
+    gravitationalPullInput.addEventListener('input', () => updateFromInput(gravitationalPullInput, gravitationalPullSlider, 0, 1000, 1));
+    colorIntensityInput.addEventListener('input', () => updateFromInput(colorIntensityInput, colorIntensitySlider, 0, 100, 1));
+    particleLifespanInput.addEventListener('input', () => updateFromInput(particleLifespanInput, particleLifespanSlider, 0, 10000, 1));
+    rainbowSpeedInput.addEventListener('input', () => updateFromInput(rainbowSpeedInput, rainbowSpeedSlider, 0, 10, 0.1));
+
+    function createParticles() {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * particleSize + 1,
+          hue: Math.random() * 360,
+          speedX: (Math.random() * 2 - 1) * particleSpeed,
+          speedY: (Math.random() * 2 - 1) * particleSpeed,
+          rotation: Math.random() * Math.PI * 2,
+          rotationSpeed: (Math.random() * 2 - 1) * 0.1,
+          life: Math.random() * particleLifespan
+        });
+      }
+    }
+
+    function drawParticles() {
+      ctx.fillStyle = 'rgba(0,0,0,0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      rainbowOffset += rainbowSpeed * 0.01;
+      particles.forEach((particle, index) => {
+        ctx.save();
+        ctx.translate(particle.x, particle.y);
+        ctx.rotate(particle.rotation);
+        ctx.beginPath();
+        
+        // Increase complexity based on the factor
+        switch(complexityFactor) {
+          case 0:
+            ctx.arc(0, 0, particle.radius, 0, Math.PI * 2);
+            break;
+          case 1:
+            ctx.rect(-particle.radius, -particle.radius, particle.radius * 2, particle.radius * 2);
+            break;
+          case 2:
+            drawStar(ctx, 0, 0, 5, particle.radius, particle.radius / 2);
+            break;
+          default:
+            drawFractal(ctx, 0, 0, particle.radius, complexityFactor);
+            break;
+        }
+        
+        const hue = (particle.hue + rainbowOffset * 360) % 360;
+        ctx.fillStyle = `hsla(${hue}, 100%, ${50 + colorIntensity/2}%, ${0.5 + colorIntensity/200})`;
+        ctx.fill();
+        ctx.restore();
+
+        // Apply gravitational pull
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const dx = centerX - particle.x;
+        const dy = centerY - particle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const force = gravitationalPull / (distance * distance);
+        particle.speedX += dx / distance * force;
+        particle.speedY += dy / distance * force;
+
+        particle.x += particle.speedX;
+        particle.y += particle.speedY;
+        particle.rotation += particle.rotationSpeed;
+
+        if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
+        if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
+
+        // Particle lifespan
+        particle.life -= 1;
+        if (particle.life <= 0) {
+          particles[index] = createNewParticle();
+        }
+      });
+    }
+
+    function createNewParticle() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * particleSize + 1,
+        hue: Math.random() * 360,
+        speedX: (Math.random() * 2 - 1) * particleSpeed,
+        speedY: (Math.random() * 2 - 1) * particleSpeed,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() * 2 - 1) * 0.1,
+        life: Math.random() * particleLifespan
+      };
+    }
+
+    function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius) {
+      let rot = Math.PI / 2 * 3;
+      let x = cx;
+      let y = cy;
+      let step = Math.PI / spikes;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - outerRadius);
+      for (let i = 0; i < spikes; i++) {
+        x = cx + Math.cos(rot) * outerRadius;
+        y = cy + Math.sin(rot) * outerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+
+        x = cx + Math.cos(rot) * innerRadius;
+        y = cy + Math.sin(rot) * innerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+      }
+      ctx.lineTo(cx, cy - outerRadius);
+      ctx.closePath();
+    }
+
+    function drawFractal(ctx, x, y, radius, depth) {
+      if (depth === 0) {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+        return;
+      }
+
+      for (let i = 0; i < 6; i++) {
+        const angle = i * Math.PI / 3;
+        const newX = x + radius * Math.cos(angle);
+        const newY = y + radius * Math.sin(angle);
+        drawFractal(ctx, newX, newY, radius / 3, depth - 1);
+      }
+    }
+
+    let fps = 0;
+    let lastCalledTime = performance.now();
+    let fpsContainer = document.getElementById('fps-container');
+
+    function updateFPS() {
+      requestAnimationFrame(function() {
+        let delta = (performance.now() - lastCalledTime) / 1000;
+        lastCalledTime = performance.now();
+        fps = 1 / delta;
+
+        fpsContainer.innerHTML = `FPS: ${fps.toFixed(1)}`;
+        fpsHistory.push(fps);
+        if (fpsHistory.length > 1000) fpsHistory.shift(); // Keep last 1000 FPS readings
+        updateFPS();
+      });
+    }
+
+    function runBenchmark() {
+      let startTime = performance.now();
+      let progress = 0;
+      fpsHistory = [];
+      benchmarkRunning = true;
+
+      function benchmarkLoop(timestamp) {
+        if (!benchmarkRunning) return;
+
+        drawParticles();
+        progress = Math.min((timestamp - startTime) / 20000, 1); // Extended to 20 seconds
+        progressBar.style.width = `${progress * 100}%`;
+
+        if (progress < 1) {
+          requestAnimationFrame(benchmarkLoop);
+        } else {
+          benchmarkRunning = false;
+          displayResults();
+          updateStats();
+          updateUserStats();
+          updateDeviceBaselines();
+        }
+      }
+
+      createParticles();
+      requestAnimationFrame(benchmarkLoop);
+    }
+
+    function displayResults() {
+      const avgFps = fpsHistory.reduce((a, b) => a + b, 0) / fpsHistory.length;
+      const roundedFPS = Math.round(avgFps);
+      let performance;
+      if (roundedFPS > 60) {
+        performance = "Godlike";
+      } else if (roundedFPS > 30) {
+        performance = "Barely Surviving";
+      } else if (roundedFPS > 15) {
+        performance = "System Strain";
+      } else {
+        performance = "Total Meltdown";
+      }
+
+      resultsDiv.innerHTML = `
+        <h2 class="flicker">Brutal Analysis</h2>
+        <p>Average FPS: ${roundedFPS}</p>
+        <p>System Status: ${performance}</p>
+        <p>Particle Overload: ${particleCount}</p>
+        <p>Particle Monstrosity: ${particleSize.toFixed(1)}</p>
+        <p>Chaos Velocity: ${particleSpeed.toFixed(1)}</p>
+        <p>Reality Warping Factor: ${complexityFactor}</p>
+        <p>Gravitational Pull: ${gravitationalPull}</p>
+        <p>Color Intensity: ${colorIntensity}</p>
+        <p>Particle Lifespan: ${particleLifespan}</p>
+        <p>Rainbow Speed: ${rainbowSpeed.toFixed(1)}</p>
+      `;
+    }
+
+    function updateStats() {
+      const avgFps = fpsHistory.reduce((a, b) => a + b, 0) / fpsHistory.length;
+      const minFps = Math.min(...fpsHistory);
+      const maxFps = Math.max(...fpsHistory);
+      const sortedFps = [...fpsHistory].sort((a, b) => a - b);
+      const lowFps = sortedFps[Math.floor(sortedFps.length * 0.01)];
+      const avgFrameTime = 1000 / avgFps;
+
+      document.getElementById('avgFps').textContent = avgFps.toFixed(2);
+      document.getElementById('minFps').textContent = minFps.toFixed(2);
+      document.getElementById('maxFps').textContent = maxFps.toFixed(2);
+      document.getElementById('lowFps').textContent = lowFps.toFixed(2);
+      document.getElementById('frameTime').textContent = avgFrameTime.toFixed(2);
+    }
+
+    function updateUserStats() {
+      const avgFps = fpsHistory.reduce((a, b) => a + b, 0) / fpsHistory.length;
+      if (avgFps > userBestScore) {
+        userBestScore = avgFps;
+      }
+      globalScores.push(avgFps);
+      totalBenchmarks++;
+      saveUserStats();
+      updateUserStatsDisplay();
+    }
+
+    function detectDevice() {
+      const deviceInfo = {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        pixelRatio: window.devicePixelRatio,
+        colorDepth: window.screen.colorDepth,
+        hardwareConcurrency: navigator.hardwareConcurrency,
+        maxTouchPoints: navigator.maxTouchPoints,
+        memory: navigator.deviceMemory
+      };
+
+      // Attempt to get GPU info
+      const canvas = document.createElement('canvas');
+      let gl;
+      let debugInfo;
+      try {
+        gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        deviceInfo.gpuVendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+        deviceInfo.gpuRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+      } catch (e) {
+        deviceInfo.gpuVendor = 'Unable to detect';
+        deviceInfo.gpuRenderer = 'Unable to detect';
+      }
+
+      return deviceInfo;
+    }
+
+    function updateDeviceBaselines() {
+      const deviceInfo = detectDevice();
+      const deviceKey = JSON.stringify(deviceInfo);
+      const avgFps = fpsHistory.reduce((a, b) => a + b, 0) / fpsHistory.length;
+
+      if (!deviceBaselines[deviceKey]) {
+        deviceBaselines[deviceKey] = {
+          scores: [],
+          settings: []
+        };
+      }
+
+      deviceBaselines[deviceKey].scores.push(avgFps);
+      deviceBaselines[deviceKey].settings.push({
+        particleCount,
+        particleSize,
+        particleSpeed,
+        complexityFactor,
+        gravitationalPull,
+        colorIntensity,
+        particleLifespan,
+        rainbowSpeed
+      });
+
+      localStorage.setItem('deviceBaselines', JSON.stringify(deviceBaselines));
+    }
+
+    function optimizeForDevice() {
+      const deviceInfo = detectDevice();
+      const deviceKey = JSON.stringify(deviceInfo);
+      const baseline = deviceBaselines[deviceKey];
+
+      if (baseline) {
+        const avgScore = baseline.scores.reduce((a, b) => a + b, 0) / baseline.scores.length;
+        const bestSettings = baseline.settings[baseline.scores.indexOf(Math.max(...baseline.scores))];
+
+        particleCount = bestSettings.particleCount;
+        particleSize = bestSettings.particleSize;
+        particleSpeed = bestSettings.particleSpeed;
+        complexityFactor = bestSettings.complexityFactor;
+        gravitationalPull = bestSettings.gravitationalPull;
+        colorIntensity = bestSettings.colorIntensity;
+        particleLifespan = bestSettings.particleLifespan;
+        rainbowSpeed = bestSettings.rainbowSpeed;
+
+        updateSliders();
+        updateSettings();
+      } else {
+        // If no baseline exists, start with moderate settings
+        particleCount = 50000;
+        particleSize = 2;
+        particleSpeed = 3;
+        complexityFactor = 2;
+        gravitationalPull = 10;
+        colorIntensity = 50;
+        particleLifespan = 100;
+        rainbowSpeed = 1;
+
+        updateSliders();
+        updateSettings();
+      }
+
+      // Display detected device info
+      const infoString = Object.entries(deviceInfo).map(([key, value]) => `${key}: ${value}`).join('<br>');
+      deviceInfoDiv.innerHTML = `<h2>Detected Device Info:</h2>${infoString}`;
+    }
+
+    function updateSliders() {
+      particleCountSlider.value = particleCount;
+      particleSizeSlider.value = particleSize;
+      speedSlider.value = particleSpeed;
+      complexitySlider.value = complexityFactor;
+      gravitationalPullSlider.value = gravitationalPull;
+      colorIntensitySlider.value = colorIntensity;
+      particleLifespanSlider.value = particleLifespan;
+      rainbowSpeedSlider.value = rainbowSpeed;
+
+      particleCountInput.value = particleCount;
+      particleSizeInput.value = particleSize;
+      speedInput.value = particleSpeed;
+      complexityInput.value = complexityFactor;
+      gravitationalPullInput.value = gravitationalPull;
+      colorIntensityInput.value = colorIntensity;
+      particleLifespanInput.value = particleLifespan;
+      rainbowSpeedInput.value = rainbowSpeed;
+    }
+
+    startButton.addEventListener('click', () => {
+      startButton.disabled = true;
+      resultsDiv.innerHTML = '';
+      runBenchmark();
+    });
+
+    detectButton.addEventListener('click', () => {
+      optimizeForDevice();
+    });
+
+    function progressiveStressTest() {
+      let testPhase = 0;
+      const phases = [
+        { particleCount: 100000, duration: 5000 },
+        { particleCount: 500000, duration: 5000 },
+        { particleCount: 1000000, duration: 5000 },
+        { particleCount: 2000000, duration: 5000 },
+        { particleCount: 5000000, duration: 5000 }
+      ];
+
+      function runPhase() {
+        if (testPhase >= phases.length) {
+          console.log("Progressive stress test completed");
+          progressiveTestInfoDiv.innerHTML += "<p>Progressive stress test completed</p>";
+          return;
+        }
+
+        particleCount = phases[testPhase].particleCount;
+        particleCountSlider.value = particleCount;
+        particleCountInput.value = particleCount;
+        updateSettings();
+
+        console.log(`Running phase ${testPhase + 1}: ${particleCount} particles`);
+        progressiveTestInfoDiv.innerHTML += `<p>Running phase ${testPhase + 1}: ${particleCount} particles</p>`;
+
+        let startTime = performance.now();
+        let phaseFpsHistory = [];
+
+        function phaseLoop(timestamp) {
+          if (performance.now() - startTime < phases[testPhase].duration) {
+            drawParticles();
+            phaseFpsHistory.push(fps);
+            requestAnimationFrame(phaseLoop);
+          } else {
+            const avgFps = phaseFpsHistory.reduce((a, b) => a + b, 0) / phaseFpsHistory.length;
+            console.log(`Phase ${testPhase + 1} complete. Average FPS: ${avgFps.toFixed(2)}`);
+            progressiveTestInfoDiv.innerHTML += `<p>Phase ${testPhase + 1} complete. Average FPS: ${avgFps.toFixed(2)}</p>`;
+            
+            if (avgFps < 30) {
+              console.log("FPS dropped below 30. Ending test.");
+              progressiveTestInfoDiv.innerHTML += "<p>FPS dropped below 30. Ending test.</p>";
+              displayProgressiveTestResults(testPhase, avgFps);
+            } else {
+              testPhase++;
+              runPhase();
+            }
+          }
+        }
+
+        requestAnimationFrame(phaseLoop);
+      }
+
+      progressiveTestInfoDiv.innerHTML = "<h2>Progressive Stress Test</h2>";
+      runPhase();
+    }
+
+    function displayProgressiveTestResults(lastPhase, lastPhaseFps) {
+      resultsDiv.innerHTML = `
+        <h2 class="flicker">Progressive Stress Test Results</h2>
+        <p>Maximum stable particle count: ${phases[lastPhase].particleCount}</p>
+        <p>Final average FPS: ${lastPhaseFps.toFixed(2)}</p>
+        <p>System pushed to the limit at phase ${lastPhase + 1} out of ${phases.length}</p>
+      `;
+    }
+
+    progressiveTestButton.addEventListener('click', () => {
+      progressiveTestButton.disabled = true;
+      resultsDiv.innerHTML = '';
+      progressiveStressTest();
+    });
+
+    // Initial particle creation
+    createParticles();
+
+    // Start FPS tracking
+    updateFPS();
+
+    // Continuous rendering
+    function render() {
+      drawParticles();
+      requestAnimationFrame(render);
+    }
+    render();
+
+    // Add some extra brutality
+    window.addEventListener('mousemove', (e) => {
+      const shockwave = {
+        x: e.clientX,
+        y: e.clientY,
+        radius: 100,
+        strength: 50
+      };
+
+      particles.forEach(particle => {
+        const dx = particle.x - shockwave.x;
+        const dy = particle.y - shockwave.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < shockwave.radius) {
+          const force = (shockwave.radius - distance) / shockwave.radius;
+          particle.speedX += dx / distance * force * shockwave.strength;
+          particle.speedY += dy / distance * force * shockwave.strength;
+        }
+      });
+    });
+
+    // Brutal mode toggle
+    let brutalMode = false;
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'b' || e.key === 'B') {
+        brutalMode = !brutalMode;
+        if (brutalMode) {
+          document.body.classList.add('shake');
+          particleCount *= 2;
+          particleSpeed *= 2;
+          complexityFactor = Math.min(complexityFactor + 2, 20);
+          gravitationalPull *= 2;
+          rainbowSpeed *= 2;
+          createParticles();
+        } else {
+          document.body.classList.remove('shake');
+          particleCount /= 2;
+          particleSpeed /= 2;
+          complexityFactor = Math.max(complexityFactor - 2, 1);
+          gravitationalPull /= 2;
+          rainbowSpeed /= 2;
+          createParticles();
+        }
+        updateSliders();
+      }
+    });
+
+    // Load user stats on page load
+    function loadUserStats() {
+      const savedStats = JSON.parse(localStorage.getItem('userStats')) || {};
+      userBestScore = savedStats.userBestScore || 0;
+      globalScores = savedStats.globalScores || [];
+      totalBenchmarks = savedStats.totalBenchmarks || 0;
+      updateUserStatsDisplay();
+    }
+
+    function saveUserStats() {
+      const statsToSave = {
+        userBestScore,
+        globalScores,
+        totalBenchmarks
+      };
+      localStorage.setItem('userStats', JSON.stringify(statsToSave));
+    }
+
+    function updateUserStatsDisplay() {
+      document.getElementById('userBestScore').textContent = userBestScore.toFixed(2);
+      const globalAverage = globalScores.reduce((a, b) => a + b, 0) / globalScores.length;
+      document.getElementById('globalAverage').textContent = globalAverage.toFixed(2);
+      document.getElementById('totalBenchmarks').textContent = totalBenchmarks;
+    }
+
+    loadUserStats();
+
+    // Share and Load Settings
+    function getSettingsObject() {
+      return {
+        particleCount,
+        particleSize,
+        particleSpeed,
+        complexityFactor,
+        gravitationalPull,
+        colorIntensity,
+        particleLifespan,
+        rainbowSpeed
+      };
+    }
+
+    function applySettings(settings) {
+      particleCount = settings.particleCount;
+      particleSize = settings.particleSize;
+      particleSpeed = settings.particleSpeed;
+      complexityFactor = settings.complexityFactor;
+      gravitationalPull = settings.gravitationalPull;
+      colorIntensity = settings.colorIntensity;
+      particleLifespan = settings.particleLifespan;
+      rainbowSpeed = settings.rainbowSpeed;
+
+      updateSliders();
+      updateSettings();
+    }
+
+    shareSettingsButton.addEventListener('click', () => {
+      const settings = getSettingsObject();
+      const compressedSettings = LZString.compressToBase64(JSON.stringify(settings));
+      settingsCodeInput.value = compressedSettings;
+      alert('Settings code copied to the input field. Share this code with others!');
+    });
+
+    loadSettingsButton.addEventListener('click', () => {
+      const compressedSettings = settingsCodeInput.value;
+      try {
+        const settings = JSON.parse(LZString.decompressFromBase64(compressedSettings));
+        applySettings(settings);
+        alert('Settings loaded successfully!');
+      } catch (error) {
+        alert('Invalid settings code. Please try again.');
+      }
+    });
+
+  </script>
+</body>
+</html>
